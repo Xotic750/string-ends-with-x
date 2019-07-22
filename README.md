@@ -51,7 +51,7 @@ import endsWith from 'string-ends-with-x';
 
 const str = 'To be, or not to be, that is the question.';
 
-endsWith(str, 'the question.'); // true
-endsWith(str, 'that is', 28); // true
-endsWith(str, 'To be'); // false
+console.log(endsWith(str, 'question.')); // true
+console.log(endsWith(str, 'to be'));     // false
+console.log(endsWith(str, 'to be', 19)); // true
 ```

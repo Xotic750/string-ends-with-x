@@ -1,6 +1,6 @@
 {
   "name": "string-ends-with-x",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Determines whether a string ends with the characters of a specified string.",
   "homepage": "https://github.com/Xotic750/string-ends-with-x",
   "author": {
