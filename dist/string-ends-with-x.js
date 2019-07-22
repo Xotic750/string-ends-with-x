@@ -2,13 +2,13 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-07-22T17:42:11.401Z",
+  "date": "2019-07-22T21:31:21.596Z",
   "describe": "",
   "description": "Determines whether a string ends with the characters of a specified string.",
   "file": "string-ends-with-x.js",
-  "hash": "7f290fcb730d8a7749b5",
+  "hash": "502360ff7b746db53a06",
   "license": "MIT",
-  "version": "1.0.1"
+  "version": "1.0.2"
 }
 */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -2320,11 +2320,11 @@ if (nativeEndsWith) {
 
   if (isWorking) {
     string_ends_with_x_esm_res = attempt_x_esm.call('abc', nativeEndsWith, 'c', -1 / 0);
-    isWorking = string_ends_with_x_esm_res.threw === false && string_ends_with_x_esm_res.value === true;
+    isWorking = string_ends_with_x_esm_res.threw === false && string_ends_with_x_esm_res.value === false;
   }
 
   if (isWorking) {
-    string_ends_with_x_esm_res = attempt_x_esm.call(123, nativeEndsWith, '1');
+    string_ends_with_x_esm_res = attempt_x_esm.call(123, nativeEndsWith, '3');
     isWorking = string_ends_with_x_esm_res.threw === false && string_ends_with_x_esm_res.value === true;
   }
 

@@ -18,11 +18,11 @@ if (nativeEndsWith) {
 
   if (isWorking) {
     res = attempt.call('abc', nativeEndsWith, 'c', -1 / 0);
-    isWorking = res.threw === false && res.value === true;
+    isWorking = res.threw === false && res.value === false;
   }
 
   if (isWorking) {
-    res = attempt.call(123, nativeEndsWith, '1');
+    res = attempt.call(123, nativeEndsWith, '3');
     isWorking = res.threw === false && res.value === true;
   }
 
