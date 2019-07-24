@@ -1,23 +1,31 @@
 <a href="https://travis-ci.org/Xotic750/string-ends-with-x"
-   title="Travis status">
+  title="Travis status">
 <img
-   src="https://travis-ci.org/Xotic750/string-ends-with-x.svg?branch=master"
-   alt="Travis status" height="18"/>
+  src="https://travis-ci.org/Xotic750/string-ends-with-x.svg?branch=master"
+  alt="Travis status" height="18">
 </a>
 <a href="https://david-dm.org/Xotic750/string-ends-with-x"
-   title="Dependency status">
-<img src="https://david-dm.org/Xotic750/string-ends-with-x.svg"
-   alt="Dependency status" height="18"/>
+  title="Dependency status">
+<img src="https://david-dm.org/Xotic750/string-ends-with-x/status.svg"
+  alt="Dependency status" height="18"/>
 </a>
-<a href="https://david-dm.org/Xotic750/string-ends-with-x#info=devDependencies"
-   title="devDependency status">
+<a
+  href="https://david-dm.org/Xotic750/string-ends-with-x?type=dev"
+  title="devDependency status">
 <img src="https://david-dm.org/Xotic750/string-ends-with-x/dev-status.svg"
-   alt="devDependency status" height="18"/>
+  alt="devDependency status" height="18"/>
 </a>
-<a href="https://badge.fury.io/js/string-ends-with-x" title="npm version">
+<a href="https://badge.fury.io/js/string-ends-with-x"
+  title="npm version">
 <img src="https://badge.fury.io/js/string-ends-with-x.svg"
-   alt="npm version" height="18"/>
+  alt="npm version" height="18">
 </a>
+<a href="https://www.jsdelivr.com/package/npm/string-ends-with-x"
+  title="jsDelivr hits">
+<img src="https://data.jsdelivr.com/v1/package/npm/string-ends-with-x/badge?style=rounded"
+  alt="jsDelivr hits" height="18">
+</a>
+
 <a name="module_string-ends-with-x"></a>
 
 ## string-ends-with-x
