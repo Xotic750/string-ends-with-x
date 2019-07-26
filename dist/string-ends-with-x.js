@@ -2,13 +2,13 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-07-25T23:02:35.427Z",
+  "date": "2019-07-26T16:27:24.676Z",
   "describe": "",
   "description": "Determines whether a string ends with the characters of a specified string.",
   "file": "string-ends-with-x.js",
   "hash": "67e73faeba8b44650c5e",
   "license": "MIT",
-  "version": "1.0.5"
+  "version": "1.0.6"
 }
 */
 (function webpackUniversalModuleDefinition(root, factory) {
