@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-07-28T13:12:54.766Z",
+  "date": "2019-07-28T14:17:10.028Z",
   "describe": "",
   "description": "Determines whether a string ends with the characters of a specified string.",
   "file": "string-ends-with-x.js",
-  "hash": "6c81ae59bb3b0af1d44d",
+  "hash": "f82287783f05b6f16a0f",
   "license": "MIT",
   "version": "1.0.7"
 }
@@ -2139,6 +2139,7 @@ var is_regexp_x_esm_isRegex = function isRegex(value) {
 
 
 // CONCATENATED MODULE: ./dist/string-ends-with-x.esm.js
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "implementation", function() { return string_ends_with_x_esm_implementation; });
 
 
 
@@ -2272,7 +2273,6 @@ var string_ends_with_x_esm_implementation = function implementation() {
  * @param {number} [length] - If provided it is used as the length of string. If omitted, the default value is the string length.
  * @returns {boolean} - `true` if the given characters are found at the end of the string; otherwise, `false`.
  */
-
 
 var $endsWith = isWorking ? string_ends_with_x_esm_patchedEndsWith() : string_ends_with_x_esm_implementation();
 /* harmony default export */ var string_ends_with_x_esm = __webpack_exports__["default"] = ($endsWith);

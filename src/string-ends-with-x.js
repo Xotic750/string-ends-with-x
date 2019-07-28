@@ -97,7 +97,7 @@ const predicate = function predicate(obj) {
   return true;
 };
 
-const implementation = function implementation() {
+export const implementation = function implementation() {
   // Firefox (< 37?) and IE 11 TP have a non-compliant startsWith implementation
   return function endsWith(string, searchString) {
     const str = toStr(requireObjectCoercible(string));

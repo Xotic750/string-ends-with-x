@@ -99,7 +99,7 @@ var predicate = function predicate(obj) {
   return true;
 };
 
-var implementation = function implementation() {
+export var implementation = function implementation() {
   // Firefox (< 37?) and IE 11 TP have a non-compliant startsWith implementation
   return function endsWith(string, searchString) {
     var str = toStr(requireObjectCoercible(string));
@@ -131,7 +131,6 @@ var implementation = function implementation() {
  * @param {number} [length] - If provided it is used as the length of string. If omitted, the default value is the string length.
  * @returns {boolean} - `true` if the given characters are found at the end of the string; otherwise, `false`.
  */
-
 
 var $endsWith = isWorking ? patchedEndsWith() : implementation();
 export default $endsWith;
