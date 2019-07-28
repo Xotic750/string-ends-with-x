@@ -31,7 +31,7 @@ const test4 = function test4() {
   return attempt.call(null, nativeEndsWith, 'n').threw;
 };
 
-const isWorking =  toBoolean(nativeEndsWith) && test1() && test2() && test3() && test4();
+const isWorking = toBoolean(nativeEndsWith) && test1() && test2() && test3() && test4();
 
 const patchedEndsWith = function patchedEndsWith() {
   return function endsWith(string, searchString) {
