@@ -55,6 +55,7 @@
     "is-regexp-x": "^3.0.17",
     "math-clamp-x": "^3.0.22",
     "require-object-coercible-x": "^2.0.26",
+    "to-boolean-x": "^2.0.24",
     "to-integer-x": "^4.0.28",
     "to-string-x": "^2.0.34"
   },

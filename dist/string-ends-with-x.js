@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-07-27T22:19:40.597Z",
+  "date": "2019-07-28T13:12:54.766Z",
   "describe": "",
   "description": "Determines whether a string ends with the characters of a specified string.",
   "file": "string-ends-with-x.js",
-  "hash": "97d69122af4b72a26beb",
+  "hash": "6c81ae59bb3b0af1d44d",
   "license": "MIT",
   "version": "1.0.7"
 }
@@ -1724,8 +1724,8 @@ if (nativeGOPD) {
   var getOPDWorksOnDom = doc ? object_get_own_property_descriptor_x_esm_doesGOPDWork(doc.createElement('div'), 'sentinel') : true;
 
   if (getOPDWorksOnDom) {
-    var res = attempt_x_esm(nativeGOPD, object_get_own_property_descriptor_x_esm_castObject('abc'), 1);
-    var worksWithStr = res.threw === false && res.value && res.value.value === 'b';
+    var object_get_own_property_descriptor_x_esm_res = attempt_x_esm(nativeGOPD, object_get_own_property_descriptor_x_esm_castObject('abc'), 1);
+    var worksWithStr = object_get_own_property_descriptor_x_esm_res.threw === false && object_get_own_property_descriptor_x_esm_res.value && object_get_own_property_descriptor_x_esm_res.value.value === 'b';
 
     if (worksWithStr) {
       var getOPDWorksOnObject = object_get_own_property_descriptor_x_esm_doesGOPDWork({}, 'sentinel');
@@ -2146,48 +2146,34 @@ var is_regexp_x_esm_isRegex = function isRegex(value) {
 
 
 
+
 var ERR_MSG = 'Cannot call method "endsWith" with a regex';
 var ew = ERR_MSG.endsWith,
     charCodeAt = ERR_MSG.charCodeAt;
 var nativeEndsWith = typeof ew === 'function' && ew;
-var isWorking;
 
-if (nativeEndsWith) {
-  var string_ends_with_x_esm_res = attempt_x_esm.call('/a/', nativeEndsWith, /a/);
-  isWorking = string_ends_with_x_esm_res.threw;
+var string_ends_with_x_esm_test1 = function test1() {
+  return attempt_x_esm.call('/a/', nativeEndsWith, /a/).threw;
+};
 
-  if (isWorking) {
-    string_ends_with_x_esm_res = attempt_x_esm.call('abc', nativeEndsWith, 'c', -1 / 0);
-    isWorking = string_ends_with_x_esm_res.threw === false && string_ends_with_x_esm_res.value === false;
-  }
+var string_ends_with_x_esm_test2 = function test2() {
+  var res = attempt_x_esm.call('abc', nativeEndsWith, 'c', -1 / 0);
+  return res.threw === false && res.value === false;
+};
 
-  if (isWorking) {
-    string_ends_with_x_esm_res = attempt_x_esm.call(123, nativeEndsWith, '3');
-    isWorking = string_ends_with_x_esm_res.threw === false && string_ends_with_x_esm_res.value === true;
-  }
+var string_ends_with_x_esm_test3 = function test3() {
+  var res = attempt_x_esm.call(123, nativeEndsWith, '3');
+  return res.threw === false && res.value === true;
+};
 
-  if (isWorking) {
-    string_ends_with_x_esm_res = attempt_x_esm.call(null, nativeEndsWith, 'n');
-    isWorking = string_ends_with_x_esm_res.threw;
-  }
-}
-/**
- * The endsWith method determines whether a string ends with the characters of a specified string, returning true or
- * false as appropriate.
- *
- * @param {string} string - The string to search.
- * @throws {TypeError} If string is null or undefined.
- * @param {string} searchString - The characters to be searched for at the end of this string.
- * @throws {TypeError} If searchString is a RegExp.
- * @param {number} [length] - If provided it is used as the length of string. If omitted, the default value is the string length.
- * @returns {boolean} - `true` if the given characters are found at the end of the string; otherwise, `false`.
- */
+var string_ends_with_x_esm_test4 = function test4() {
+  return attempt_x_esm.call(null, nativeEndsWith, 'n').threw;
+};
 
+var isWorking = to_boolean_x_esm(nativeEndsWith) && string_ends_with_x_esm_test1() && string_ends_with_x_esm_test2() && string_ends_with_x_esm_test3() && string_ends_with_x_esm_test4();
 
-var $endsWith;
-
-if (isWorking) {
-  $endsWith = function endsWith(string, searchString) {
+var string_ends_with_x_esm_patchedEndsWith = function patchedEndsWith() {
+  return function endsWith(string, searchString) {
     var str = to_string_x_esm(require_object_coercible_x_esm(string));
 
     if (is_regexp_x_esm(searchString)) {
@@ -2203,56 +2189,93 @@ if (isWorking) {
 
     return nativeEndsWith.apply(str, args);
   };
-} else {
-  // Firefox (< 37?) and IE 11 TP have a noncompliant startsWith implementation
-  $endsWith = function endsWith(string, searchString) {
-    var str = to_string_x_esm(require_object_coercible_x_esm(string));
+};
 
-    if (is_regexp_x_esm(searchString)) {
-      throw new TypeError(ERR_MSG);
-    }
+var string_ends_with_x_esm_assertNotRegexp = function assertNotRegexp(searchString) {
+  if (is_regexp_x_esm(searchString)) {
+    throw new TypeError(ERR_MSG);
+  }
 
-    var stringLength = str.length;
-    var searchStr = to_string_x_esm(searchString);
-    var searchLength = searchStr.length;
-    var length = stringLength;
+  return searchString;
+};
 
-    if (arguments.length > 2) {
-      /* eslint-disable-next-line prefer-rest-params */
-      var position = arguments[2];
+var string_ends_with_x_esm_getLength = function getLength(args, stringLength) {
+  var length = stringLength;
 
-      if (typeof position !== 'undefined') {
-        length = to_integer_x_esm(position);
+  if (args.length > 2) {
+    var position = args[2];
 
-        if (is_nan_x_esm(length)) {
-          length = 0;
-        }
+    if (typeof position !== 'undefined') {
+      length = to_integer_x_esm(position);
+
+      if (is_nan_x_esm(length)) {
+        length = 0;
       }
     }
+  }
 
-    var end = math_clamp_x_esm(length, 0, stringLength);
-    var start = end - searchLength;
+  return length;
+};
 
-    if (start < 0) {
+var predicate = function predicate(obj) {
+  var str = obj.str,
+      searchStr = obj.searchStr,
+      start = obj.start,
+      searchLength = obj.searchLength;
+
+  if (start < 0) {
+    return false;
+  }
+
+  var index = 0;
+
+  while (index < searchLength) {
+    if (charCodeAt.call(str, start + index) !== charCodeAt.call(searchStr, index)) {
       return false;
     }
 
-    var index = 0;
+    index += 1;
+  }
 
-    while (index < searchLength) {
-      if (charCodeAt.call(str, start + index) !== charCodeAt.call(searchStr, index)) {
-        return false;
-      }
+  return true;
+};
 
-      index += 1;
-    }
+var string_ends_with_x_esm_implementation = function implementation() {
+  // Firefox (< 37?) and IE 11 TP have a non-compliant startsWith implementation
+  return function endsWith(string, searchString) {
+    var str = to_string_x_esm(require_object_coercible_x_esm(string));
+    string_ends_with_x_esm_assertNotRegexp(searchString);
+    var stringLength = str.length;
+    var searchStr = to_string_x_esm(searchString);
+    var searchLength = searchStr.length;
+    /* eslint-disable-next-line prefer-rest-params */
 
-    return true;
+    var length = string_ends_with_x_esm_getLength(arguments, stringLength);
+    var end = math_clamp_x_esm(length, 0, stringLength);
+    var start = end - searchLength;
+    return predicate({
+      str: str,
+      searchStr: searchStr,
+      start: start,
+      searchLength: searchLength
+    });
   };
-}
+};
+/**
+ * The endsWith method determines whether a string ends with the characters of a specified string, returning true or
+ * false as appropriate.
+ *
+ * @param {string} string - The string to search.
+ * @throws {TypeError} If string is null or undefined.
+ * @param {string} searchString - The characters to be searched for at the end of this string.
+ * @throws {TypeError} If searchString is a RegExp.
+ * @param {number} [length] - If provided it is used as the length of string. If omitted, the default value is the string length.
+ * @returns {boolean} - `true` if the given characters are found at the end of the string; otherwise, `false`.
+ */
 
-var sew = $endsWith;
-/* harmony default export */ var string_ends_with_x_esm = __webpack_exports__["default"] = (sew);
+
+var $endsWith = isWorking ? string_ends_with_x_esm_patchedEndsWith() : string_ends_with_x_esm_implementation();
+/* harmony default export */ var string_ends_with_x_esm = __webpack_exports__["default"] = ($endsWith);
 
 
 

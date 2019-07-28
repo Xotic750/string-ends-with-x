@@ -5,48 +5,34 @@ import toStr from 'to-string-x';
 import isRegExp from 'is-regexp-x';
 import numberIsNaN from 'is-nan-x';
 import clamp from 'math-clamp-x';
+import toBoolean from 'to-boolean-x';
 var ERR_MSG = 'Cannot call method "endsWith" with a regex';
 var ew = ERR_MSG.endsWith,
     charCodeAt = ERR_MSG.charCodeAt;
 var nativeEndsWith = typeof ew === 'function' && ew;
-var isWorking;
 
-if (nativeEndsWith) {
-  var res = attempt.call('/a/', nativeEndsWith, /a/);
-  isWorking = res.threw;
+var test1 = function test1() {
+  return attempt.call('/a/', nativeEndsWith, /a/).threw;
+};
 
-  if (isWorking) {
-    res = attempt.call('abc', nativeEndsWith, 'c', -1 / 0);
-    isWorking = res.threw === false && res.value === false;
-  }
+var test2 = function test2() {
+  var res = attempt.call('abc', nativeEndsWith, 'c', -1 / 0);
+  return res.threw === false && res.value === false;
+};
 
-  if (isWorking) {
-    res = attempt.call(123, nativeEndsWith, '3');
-    isWorking = res.threw === false && res.value === true;
-  }
+var test3 = function test3() {
+  var res = attempt.call(123, nativeEndsWith, '3');
+  return res.threw === false && res.value === true;
+};
 
-  if (isWorking) {
-    res = attempt.call(null, nativeEndsWith, 'n');
-    isWorking = res.threw;
-  }
-}
-/**
- * The endsWith method determines whether a string ends with the characters of a specified string, returning true or
- * false as appropriate.
- *
- * @param {string} string - The string to search.
- * @throws {TypeError} If string is null or undefined.
- * @param {string} searchString - The characters to be searched for at the end of this string.
- * @throws {TypeError} If searchString is a RegExp.
- * @param {number} [length] - If provided it is used as the length of string. If omitted, the default value is the string length.
- * @returns {boolean} - `true` if the given characters are found at the end of the string; otherwise, `false`.
- */
+var test4 = function test4() {
+  return attempt.call(null, nativeEndsWith, 'n').threw;
+};
 
+var isWorking = toBoolean(nativeEndsWith) && test1() && test2() && test3() && test4();
 
-var $endsWith;
-
-if (isWorking) {
-  $endsWith = function endsWith(string, searchString) {
+var patchedEndsWith = function patchedEndsWith() {
+  return function endsWith(string, searchString) {
     var str = toStr(requireObjectCoercible(string));
 
     if (isRegExp(searchString)) {
@@ -62,55 +48,92 @@ if (isWorking) {
 
     return nativeEndsWith.apply(str, args);
   };
-} else {
-  // Firefox (< 37?) and IE 11 TP have a noncompliant startsWith implementation
-  $endsWith = function endsWith(string, searchString) {
-    var str = toStr(requireObjectCoercible(string));
+};
 
-    if (isRegExp(searchString)) {
-      throw new TypeError(ERR_MSG);
-    }
+var assertNotRegexp = function assertNotRegexp(searchString) {
+  if (isRegExp(searchString)) {
+    throw new TypeError(ERR_MSG);
+  }
 
-    var stringLength = str.length;
-    var searchStr = toStr(searchString);
-    var searchLength = searchStr.length;
-    var length = stringLength;
+  return searchString;
+};
 
-    if (arguments.length > 2) {
-      /* eslint-disable-next-line prefer-rest-params */
-      var position = arguments[2];
+var getLength = function getLength(args, stringLength) {
+  var length = stringLength;
 
-      if (typeof position !== 'undefined') {
-        length = toInteger(position);
+  if (args.length > 2) {
+    var position = args[2];
 
-        if (numberIsNaN(length)) {
-          length = 0;
-        }
+    if (typeof position !== 'undefined') {
+      length = toInteger(position);
+
+      if (numberIsNaN(length)) {
+        length = 0;
       }
     }
+  }
 
-    var end = clamp(length, 0, stringLength);
-    var start = end - searchLength;
+  return length;
+};
 
-    if (start < 0) {
+var predicate = function predicate(obj) {
+  var str = obj.str,
+      searchStr = obj.searchStr,
+      start = obj.start,
+      searchLength = obj.searchLength;
+
+  if (start < 0) {
+    return false;
+  }
+
+  var index = 0;
+
+  while (index < searchLength) {
+    if (charCodeAt.call(str, start + index) !== charCodeAt.call(searchStr, index)) {
       return false;
     }
 
-    var index = 0;
+    index += 1;
+  }
 
-    while (index < searchLength) {
-      if (charCodeAt.call(str, start + index) !== charCodeAt.call(searchStr, index)) {
-        return false;
-      }
+  return true;
+};
 
-      index += 1;
-    }
+var implementation = function implementation() {
+  // Firefox (< 37?) and IE 11 TP have a non-compliant startsWith implementation
+  return function endsWith(string, searchString) {
+    var str = toStr(requireObjectCoercible(string));
+    assertNotRegexp(searchString);
+    var stringLength = str.length;
+    var searchStr = toStr(searchString);
+    var searchLength = searchStr.length;
+    /* eslint-disable-next-line prefer-rest-params */
 
-    return true;
+    var length = getLength(arguments, stringLength);
+    var end = clamp(length, 0, stringLength);
+    var start = end - searchLength;
+    return predicate({
+      str: str,
+      searchStr: searchStr,
+      start: start,
+      searchLength: searchLength
+    });
   };
-}
+};
+/**
+ * The endsWith method determines whether a string ends with the characters of a specified string, returning true or
+ * false as appropriate.
+ *
+ * @param {string} string - The string to search.
+ * @throws {TypeError} If string is null or undefined.
+ * @param {string} searchString - The characters to be searched for at the end of this string.
+ * @throws {TypeError} If searchString is a RegExp.
+ * @param {number} [length] - If provided it is used as the length of string. If omitted, the default value is the string length.
+ * @returns {boolean} - `true` if the given characters are found at the end of the string; otherwise, `false`.
+ */
 
-var sew = $endsWith;
-export default sew;
+
+var $endsWith = isWorking ? patchedEndsWith() : implementation();
+export default $endsWith;
 
 //# sourceMappingURL=string-ends-with-x.esm.js.map
