@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-08-04T23:47:37.196Z",
+  "date": "2019-08-05T12:13:34.953Z",
   "describe": "",
   "description": "Determines whether a string ends with the characters of a specified string.",
   "file": "string-ends-with-x.js",
-  "hash": "40e6f08d8e46a7c2b5c9",
+  "hash": "337a455c1731bcd1f0be",
   "license": "MIT",
   "version": "1.0.8"
 }
@@ -2180,7 +2180,7 @@ var is_regexp_x_esm_isRegex = function isRegex(value) {
 
 
 // CONCATENATED MODULE: ./dist/string-ends-with-x.esm.js
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "implementation", function() { return string_ends_with_x_esm_implementation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "implementation", function() { return implementation; });
 
 
 
@@ -2214,23 +2214,21 @@ var string_ends_with_x_esm_test4 = function test4() {
 
 var isWorking = to_boolean_x_esm(nativeEndsWith) && string_ends_with_x_esm_test1() && string_ends_with_x_esm_test2() && string_ends_with_x_esm_test3() && string_ends_with_x_esm_test4();
 
-var string_ends_with_x_esm_patchedEndsWith = function patchedEndsWith() {
-  return function endsWith(string, searchString) {
-    var str = to_string_x_esm(require_object_coercible_x_esm(string));
+var patchedEndsWith = function endsWith(string, searchString) {
+  var str = to_string_x_esm(require_object_coercible_x_esm(string));
 
-    if (is_regexp_x_esm(searchString)) {
-      throw new TypeError(ERR_MSG);
-    }
+  if (is_regexp_x_esm(searchString)) {
+    throw new TypeError(ERR_MSG);
+  }
 
-    var args = [searchString];
+  var args = [searchString];
 
-    if (arguments.length > 2) {
-      /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
-      args[1] = arguments[2];
-    }
+  if (arguments.length > 2) {
+    /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
+    args[1] = arguments[2];
+  }
 
-    return nativeEndsWith.apply(str, args);
-  };
+  return nativeEndsWith.apply(str, args);
 };
 
 var string_ends_with_x_esm_assertNotRegexp = function assertNotRegexp(searchString) {
@@ -2280,28 +2278,26 @@ var predicate = function predicate(obj) {
   }
 
   return true;
-};
+}; // Firefox (< 37?) and IE 11 TP have a non-compliant startsWith implementation
 
-var string_ends_with_x_esm_implementation = function implementation() {
-  // Firefox (< 37?) and IE 11 TP have a non-compliant startsWith implementation
-  return function endsWith(string, searchString) {
-    var str = to_string_x_esm(require_object_coercible_x_esm(string));
-    string_ends_with_x_esm_assertNotRegexp(searchString);
-    var stringLength = str.length;
-    var searchStr = to_string_x_esm(searchString);
-    var searchLength = searchStr.length;
-    /* eslint-disable-next-line prefer-rest-params */
 
-    var length = string_ends_with_x_esm_getLength(arguments, stringLength);
-    var end = math_clamp_x_esm(length, 0, stringLength);
-    var start = end - searchLength;
-    return predicate({
-      str: str,
-      searchStr: searchStr,
-      start: start,
-      searchLength: searchLength
-    });
-  };
+var implementation = function endsWith(string, searchString) {
+  var str = to_string_x_esm(require_object_coercible_x_esm(string));
+  string_ends_with_x_esm_assertNotRegexp(searchString);
+  var stringLength = str.length;
+  var searchStr = to_string_x_esm(searchString);
+  var searchLength = searchStr.length;
+  /* eslint-disable-next-line prefer-rest-params */
+
+  var length = string_ends_with_x_esm_getLength(arguments, stringLength);
+  var end = math_clamp_x_esm(length, 0, stringLength);
+  var start = end - searchLength;
+  return predicate({
+    str: str,
+    searchStr: searchStr,
+    start: start,
+    searchLength: searchLength
+  });
 };
 /**
  * The endsWith method determines whether a string ends with the characters of a specified string, returning true or
@@ -2315,7 +2311,7 @@ var string_ends_with_x_esm_implementation = function implementation() {
  * @returns {boolean} - `true` if the given characters are found at the end of the string; otherwise, `false`.
  */
 
-var $endsWith = isWorking ? string_ends_with_x_esm_patchedEndsWith() : string_ends_with_x_esm_implementation();
+var $endsWith = isWorking ? patchedEndsWith : implementation;
 /* harmony default export */ var string_ends_with_x_esm = __webpack_exports__["default"] = ($endsWith);
 
 

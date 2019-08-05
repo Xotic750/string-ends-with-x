@@ -31,23 +31,21 @@ var test4 = function test4() {
 
 var isWorking = toBoolean(nativeEndsWith) && test1() && test2() && test3() && test4();
 
-var patchedEndsWith = function patchedEndsWith() {
-  return function endsWith(string, searchString) {
-    var str = toStr(requireObjectCoercible(string));
+var patchedEndsWith = function endsWith(string, searchString) {
+  var str = toStr(requireObjectCoercible(string));
 
-    if (isRegExp(searchString)) {
-      throw new TypeError(ERR_MSG);
-    }
+  if (isRegExp(searchString)) {
+    throw new TypeError(ERR_MSG);
+  }
 
-    var args = [searchString];
+  var args = [searchString];
 
-    if (arguments.length > 2) {
-      /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
-      args[1] = arguments[2];
-    }
+  if (arguments.length > 2) {
+    /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
+    args[1] = arguments[2];
+  }
 
-    return nativeEndsWith.apply(str, args);
-  };
+  return nativeEndsWith.apply(str, args);
 };
 
 var assertNotRegexp = function assertNotRegexp(searchString) {
@@ -97,28 +95,26 @@ var predicate = function predicate(obj) {
   }
 
   return true;
-};
+}; // Firefox (< 37?) and IE 11 TP have a non-compliant startsWith implementation
 
-export var implementation = function implementation() {
-  // Firefox (< 37?) and IE 11 TP have a non-compliant startsWith implementation
-  return function endsWith(string, searchString) {
-    var str = toStr(requireObjectCoercible(string));
-    assertNotRegexp(searchString);
-    var stringLength = str.length;
-    var searchStr = toStr(searchString);
-    var searchLength = searchStr.length;
-    /* eslint-disable-next-line prefer-rest-params */
 
-    var length = getLength(arguments, stringLength);
-    var end = clamp(length, 0, stringLength);
-    var start = end - searchLength;
-    return predicate({
-      str: str,
-      searchStr: searchStr,
-      start: start,
-      searchLength: searchLength
-    });
-  };
+export var implementation = function endsWith(string, searchString) {
+  var str = toStr(requireObjectCoercible(string));
+  assertNotRegexp(searchString);
+  var stringLength = str.length;
+  var searchStr = toStr(searchString);
+  var searchLength = searchStr.length;
+  /* eslint-disable-next-line prefer-rest-params */
+
+  var length = getLength(arguments, stringLength);
+  var end = clamp(length, 0, stringLength);
+  var start = end - searchLength;
+  return predicate({
+    str: str,
+    searchStr: searchStr,
+    start: start,
+    searchLength: searchLength
+  });
 };
 /**
  * The endsWith method determines whether a string ends with the characters of a specified string, returning true or
@@ -132,7 +128,7 @@ export var implementation = function implementation() {
  * @returns {boolean} - `true` if the given characters are found at the end of the string; otherwise, `false`.
  */
 
-var $endsWith = isWorking ? patchedEndsWith() : implementation();
+var $endsWith = isWorking ? patchedEndsWith : implementation;
 export default $endsWith;
 
 //# sourceMappingURL=string-ends-with-x.esm.js.map

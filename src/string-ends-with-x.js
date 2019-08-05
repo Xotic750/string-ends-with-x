@@ -33,23 +33,21 @@ const test4 = function test4() {
 
 const isWorking = toBoolean(nativeEndsWith) && test1() && test2() && test3() && test4();
 
-const patchedEndsWith = function patchedEndsWith() {
-  return function endsWith(string, searchString) {
-    const str = toStr(requireObjectCoercible(string));
+const patchedEndsWith = function endsWith(string, searchString) {
+  const str = toStr(requireObjectCoercible(string));
 
-    if (isRegExp(searchString)) {
-      throw new TypeError(ERR_MSG);
-    }
+  if (isRegExp(searchString)) {
+    throw new TypeError(ERR_MSG);
+  }
 
-    const args = [searchString];
+  const args = [searchString];
 
-    if (arguments.length > 2) {
-      /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
-      args[1] = arguments[2];
-    }
+  if (arguments.length > 2) {
+    /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
+    args[1] = arguments[2];
+  }
 
-    return nativeEndsWith.apply(str, args);
-  };
+  return nativeEndsWith.apply(str, args);
 };
 
 const assertNotRegexp = function assertNotRegexp(searchString) {
@@ -97,23 +95,21 @@ const predicate = function predicate(obj) {
   return true;
 };
 
-export const implementation = function implementation() {
-  // Firefox (< 37?) and IE 11 TP have a non-compliant startsWith implementation
-  return function endsWith(string, searchString) {
-    const str = toStr(requireObjectCoercible(string));
+// Firefox (< 37?) and IE 11 TP have a non-compliant startsWith implementation
+export const implementation = function endsWith(string, searchString) {
+  const str = toStr(requireObjectCoercible(string));
 
-    assertNotRegexp(searchString);
+  assertNotRegexp(searchString);
 
-    const stringLength = str.length;
-    const searchStr = toStr(searchString);
-    const searchLength = searchStr.length;
-    /* eslint-disable-next-line prefer-rest-params */
-    const length = getLength(arguments, stringLength);
-    const end = clamp(length, 0, stringLength);
-    const start = end - searchLength;
+  const stringLength = str.length;
+  const searchStr = toStr(searchString);
+  const searchLength = searchStr.length;
+  /* eslint-disable-next-line prefer-rest-params */
+  const length = getLength(arguments, stringLength);
+  const end = clamp(length, 0, stringLength);
+  const start = end - searchLength;
 
-    return predicate({str, searchStr, start, searchLength});
-  };
+  return predicate({str, searchStr, start, searchLength});
 };
 
 /**
@@ -127,6 +123,6 @@ export const implementation = function implementation() {
  * @param {number} [length] - If provided it is used as the length of string. If omitted, the default value is the string length.
  * @returns {boolean} - `true` if the given characters are found at the end of the string; otherwise, `false`.
  */
-const $endsWith = isWorking ? patchedEndsWith() : implementation();
+const $endsWith = isWorking ? patchedEndsWith : implementation;
 
 export default $endsWith;
