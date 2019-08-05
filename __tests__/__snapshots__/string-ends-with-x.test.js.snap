@@ -1,23 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`endsWith throws due to 1. searchString and 2. being a regex 1`] = `""`;
+exports[`endsWith 0 throws due to 1. searchString and 2. being a regex 1`] = `""`;
 
-exports[`endsWith throws due to 1. searchString and 2. being a regex 2`] = `"Cannot call method \\"endsWith\\" with a regex"`;
+exports[`endsWith 0 throws due to 1. searchString and 2. being a regex 2`] = `"Cannot call method \\"endsWith\\" with a regex"`;
 
-exports[`endsWith throws if searchString is a regex 1`] = `"First argument to String.prototype.endsWith must not be a regular expression"`;
+exports[`endsWith 0 throws if searchString is a regex 1`] = `"First argument to String.prototype.endsWith must not be a regular expression"`;
 
-exports[`endsWith throws if searchString is a regex 2`] = `"First argument to String.prototype.endsWith must not be a regular expression"`;
+exports[`endsWith 0 throws if searchString is a regex 2`] = `"First argument to String.prototype.endsWith must not be a regular expression"`;
 
-exports[`endsWith throws if searchString is a regex 3`] = `"First argument to String.prototype.endsWith must not be a regular expression"`;
+exports[`endsWith 0 throws if searchString is a regex 3`] = `"First argument to String.prototype.endsWith must not be a regular expression"`;
 
-exports[`endsWith throws if string is null or undefined 1`] = `"Cannot call method on undefined"`;
+exports[`endsWith 0 throws if string is null or undefined 1`] = `"Cannot call method on undefined"`;
 
-exports[`endsWith throws if string is null or undefined 2`] = `"Cannot call method on undefined"`;
+exports[`endsWith 0 throws if string is null or undefined 2`] = `"Cannot call method on undefined"`;
 
-exports[`endsWith throws if string is null or undefined 3`] = `"Cannot call method on undefined"`;
+exports[`endsWith 0 throws if string is null or undefined 3`] = `"Cannot call method on undefined"`;
 
-exports[`endsWith throws if string is null or undefined 4`] = `"Cannot call method on null"`;
+exports[`endsWith 0 throws if string is null or undefined 4`] = `"Cannot call method on null"`;
 
-exports[`endsWith throws if string is null or undefined 5`] = `"Cannot call method on null"`;
+exports[`endsWith 0 throws if string is null or undefined 5`] = `"Cannot call method on null"`;
 
-exports[`endsWith throws if string is null or undefined 6`] = `"Cannot call method on null"`;
+exports[`endsWith 0 throws if string is null or undefined 6`] = `"Cannot call method on null"`;
+
+exports[`endsWith 1 throws due to 1. searchString and 2. being a regex 1`] = `""`;
+
+exports[`endsWith 1 throws due to 1. searchString and 2. being a regex 2`] = `"Cannot call method \\"endsWith\\" with a regex"`;
+
+exports[`endsWith 1 throws if searchString is a regex 1`] = `"First argument to String.prototype.endsWith must not be a regular expression"`;
+
+exports[`endsWith 1 throws if searchString is a regex 2`] = `"First argument to String.prototype.endsWith must not be a regular expression"`;
+
+exports[`endsWith 1 throws if searchString is a regex 3`] = `"First argument to String.prototype.endsWith must not be a regular expression"`;
+
+exports[`endsWith 1 throws if string is null or undefined 1`] = `"Cannot call method on undefined"`;
+
+exports[`endsWith 1 throws if string is null or undefined 2`] = `"Cannot call method on undefined"`;
+
+exports[`endsWith 1 throws if string is null or undefined 3`] = `"Cannot call method on undefined"`;
+
+exports[`endsWith 1 throws if string is null or undefined 4`] = `"Cannot call method on null"`;
+
+exports[`endsWith 1 throws if string is null or undefined 5`] = `"Cannot call method on null"`;
+
+exports[`endsWith 1 throws if string is null or undefined 6`] = `"Cannot call method on null"`;
