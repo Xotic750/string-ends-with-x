@@ -6,30 +6,31 @@ import isRegExp from 'is-regexp-x';
 import numberIsNaN from 'is-nan-x';
 import clamp from 'math-clamp-x';
 import toBoolean from 'to-boolean-x';
+import methodize from 'simple-methodize-x';
 var ERR_MSG = 'Cannot call method "endsWith" with a regex';
-var ew = ERR_MSG.endsWith,
-    charCodeAt = ERR_MSG.charCodeAt;
-var nativeEndsWith = typeof ew === 'function' && ew;
+var charCodeAt = methodize(ERR_MSG.charCodeAt);
+var nativeEndsWith = ERR_MSG.endsWith;
+var methodizedEndsWith = typeof nativeEndsWith === 'function' && methodize(nativeEndsWith);
 
 var test1 = function test1() {
-  return attempt.call('/a/', nativeEndsWith, /a/).threw;
+  return attempt(methodizedEndsWith, '/a/', /a/).threw;
 };
 
 var test2 = function test2() {
-  var res = attempt.call('abc', nativeEndsWith, 'c', -1 / 0);
+  var res = attempt(methodizedEndsWith, 'abc', 'c', -1 / 0);
   return res.threw === false && res.value === false;
 };
 
 var test3 = function test3() {
-  var res = attempt.call(123, nativeEndsWith, '3');
+  var res = attempt(methodizedEndsWith, 123, '3');
   return res.threw === false && res.value === true;
 };
 
 var test4 = function test4() {
-  return attempt.call(null, nativeEndsWith, 'n').threw;
+  return attempt(methodizedEndsWith, null, 'n').threw;
 };
 
-var isWorking = toBoolean(nativeEndsWith) && test1() && test2() && test3() && test4();
+var isWorking = toBoolean(methodizedEndsWith) && test1() && test2() && test3() && test4();
 
 var patchedEndsWith = function endsWith(string, searchString) {
   var str = toStr(requireObjectCoercible(string));
@@ -37,15 +38,10 @@ var patchedEndsWith = function endsWith(string, searchString) {
   if (isRegExp(searchString)) {
     throw new TypeError(ERR_MSG);
   }
+  /* eslint-disable-next-line prefer-rest-params */
 
-  var args = [searchString];
 
-  if (arguments.length > 2) {
-    /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
-    args[1] = arguments[2];
-  }
-
-  return nativeEndsWith.apply(str, args);
+  return methodizedEndsWith(str, searchString, arguments[2]);
 };
 
 var assertNotRegexp = function assertNotRegexp(searchString) {
@@ -87,7 +83,7 @@ var predicate = function predicate(obj) {
   var index = 0;
 
   while (index < searchLength) {
-    if (charCodeAt.call(str, start + index) !== charCodeAt.call(searchStr, index)) {
+    if (charCodeAt(str, start + index) !== charCodeAt(searchStr, index)) {
       return false;
     }
 

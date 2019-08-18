@@ -6,32 +6,34 @@ import isRegExp from 'is-regexp-x';
 import numberIsNaN from 'is-nan-x';
 import clamp from 'math-clamp-x';
 import toBoolean from 'to-boolean-x';
+import methodize from 'simple-methodize-x';
 
 const ERR_MSG = 'Cannot call method "endsWith" with a regex';
-const {endsWith: ew, charCodeAt} = ERR_MSG;
-const nativeEndsWith = typeof ew === 'function' && ew;
+const charCodeAt = methodize(ERR_MSG.charCodeAt);
+const nativeEndsWith = ERR_MSG.endsWith;
+const methodizedEndsWith = typeof nativeEndsWith === 'function' && methodize(nativeEndsWith);
 
 const test1 = function test1() {
-  return attempt.call('/a/', nativeEndsWith, /a/).threw;
+  return attempt(methodizedEndsWith, '/a/', /a/).threw;
 };
 
 const test2 = function test2() {
-  const res = attempt.call('abc', nativeEndsWith, 'c', -1 / 0);
+  const res = attempt(methodizedEndsWith, 'abc', 'c', -1 / 0);
 
   return res.threw === false && res.value === false;
 };
 
 const test3 = function test3() {
-  const res = attempt.call(123, nativeEndsWith, '3');
+  const res = attempt(methodizedEndsWith, 123, '3');
 
   return res.threw === false && res.value === true;
 };
 
 const test4 = function test4() {
-  return attempt.call(null, nativeEndsWith, 'n').threw;
+  return attempt(methodizedEndsWith, null, 'n').threw;
 };
 
-const isWorking = toBoolean(nativeEndsWith) && test1() && test2() && test3() && test4();
+const isWorking = toBoolean(methodizedEndsWith) && test1() && test2() && test3() && test4();
 
 const patchedEndsWith = function endsWith(string, searchString) {
   const str = toStr(requireObjectCoercible(string));
@@ -40,14 +42,8 @@ const patchedEndsWith = function endsWith(string, searchString) {
     throw new TypeError(ERR_MSG);
   }
 
-  const args = [searchString];
-
-  if (arguments.length > 2) {
-    /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
-    args[1] = arguments[2];
-  }
-
-  return nativeEndsWith.apply(str, args);
+  /* eslint-disable-next-line prefer-rest-params */
+  return methodizedEndsWith(str, searchString, arguments[2]);
 };
 
 const assertNotRegexp = function assertNotRegexp(searchString) {
@@ -85,7 +81,7 @@ const predicate = function predicate(obj) {
 
   let index = 0;
   while (index < searchLength) {
-    if (charCodeAt.call(str, start + index) !== charCodeAt.call(searchStr, index)) {
+    if (charCodeAt(str, start + index) !== charCodeAt(searchStr, index)) {
       return false;
     }
 
