@@ -2,7 +2,7 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-09-05T00:32:38.539Z",
+  "date": "2019-09-05T20:46:06.111Z",
   "describe": "",
   "description": "Determines whether a string ends with the characters of a specified string.",
   "file": "string-ends-with-x.js",
